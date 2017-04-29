@@ -1,0 +1,49 @@
+<section id="login-container" class="content-form">
+  <div class="login-form">
+    <div id="login-form">
+      <h2 class="heading">{% translate portal.login_portal %}</h2>
+      <p class="info-text">{% translate portal.login_details %}</p>
+      {% snippet login_form %}
+    </div>
+    <div id="forgot-form" class="hide">
+      <h2 class="heading">{% translate forgot_password %}</h2>
+      <p>{% translate portal.reset_password %}</p>
+      {% snippet forgot_password_form %}
+    </div>
+    {% if portal.can_submit_ticket_without_login %}
+    {% unless portal.has_solutions %}				
+    <hr />
+    <div>
+      <a href="{{ portal.new_ticket_url }}" class="btn btn-newticket btn-primary">
+        {% translate portal.new_support_ticket %}
+      </a>
+      <h3 class="heading">
+        {% translate portal.submit_new_ticket %}
+      </h3>
+    </div>				
+    {% endunless %}
+    {% endif %}
+  </div>
+{% if portal.has_alternate_login or portal.can_signup_feature%}
+  <div class="login-right-container">
+    {% if portal.has_alternate_login %}
+    <section class="alt-login-button">
+      <h2 class="heading">{% translate portal.login_options %}</h2>
+      {{ "" | login_via_google }}
+      {{ "" | login_via_yammer}}
+    </section>
+    {% endif %}
+     {% if portal.can_signup_feature %}
+    <section id="signup-container" class="sidebar content-form rounded-6">
+      <h2 class="heading">{% translate portal.signup %}</h2>
+      <p class="info-text">
+        {% translate signup_help_information %}
+      </p>
+        <a href="{{ portal.signup_url }}" class="btn btn-primary btn-signup">
+          {% translate portal.signup %}
+        </a>
+    </section>
+    {% endif %}
+  </div>
+ {% endif %}
+</section>
