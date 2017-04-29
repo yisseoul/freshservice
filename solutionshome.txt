@@ -1,0 +1,29 @@
+<section class="content main-links" id="solutions-index">
+  <div class="main-content clearfix">
+	  <div class="pull-left">
+	    <span class="icon-browse-solution-small mt10 collab-solutions-icon"></span>
+	  </div>
+	  <div class="pull-left ml12">
+	    <h3 class="heading">{% translate portal_pages.groups.solutions %}</h3>
+	    <h5 class="small-heading">{% translate portal.solution_text %}</h5>
+	  </div>
+  </div>
+  {% for category in portal.solution_categories %}
+    {% if category.folders_count > 0 %}
+      <div class="list-category">
+        <h4>{{ category | link_to_category }}</h4>
+        <hr class="divider" />
+        {% for folder in category.folders %}
+        <section class="cs-g article-list">
+          <div class="list-lead">
+            {{ folder | link_to_folder_with_count }}
+          </div>
+          {{ folder | article_list:5 }}
+        </section>
+        {% else %}
+        {{ portal | filler_for_solutions }}
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</section>
