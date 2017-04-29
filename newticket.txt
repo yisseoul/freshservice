@@ -1,0 +1,8 @@
+<section class="content main rounded-6" id="create-ticket">
+	<h3 class="heading">{% translate ticket.submit_ticket_title %}</h3>
+  	{% snippet new_ticket_form %}
+</section>
+
+<section class="sidebar content-light rounded-6" id="new-ticket-search">
+	<br />
+</section>
