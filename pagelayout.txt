@@ -1,0 +1,44 @@
+<div class="jPanelMenu-panel">
+	<div class="tab-panel hide" id="menu">
+		{% for tab in portal.tabs %}
+		    {% if tab.url %}
+		      <a class="{% if tab.tab_type == portal.current_tab %}active{% endif %}" href="{{tab.url}}">
+		          {{ tab.label }} 
+		      </a>
+		    {% endif %}
+		{% endfor %}
+		{% if portal.can_submit_ticket_without_login %}
+			 <a href="{{ portal.new_ticket_url }}">{% translate portal.new_ticket %}</a>
+		{% endif %}
+		{% if portal.has_user_signed_in == true %}
+			 <a href="{{ portal.profile_url }}">{% translate portal.edit_profile %}</a>
+	         <a href="{{ portal.logout_url }}">{% translate portal.sign_out %}</a>
+		{% else %}
+			<a href="{{ portal.login_url }}">{% translate portal.login %}</a>
+		{% endif%}
+	</div>
+
+	<div class="layout-panel">
+	{{ header }}
+	<div class="page page-layout" id="new-layout">
+		<!-- Notification Messages  -->
+		{{ page_message }}
+		
+		 <!-- Search and page links for the page -->
+		  {% if portal.current_tab and portal.current_tab != "service_catalog" %}
+		  <section class="help-center rounded-6">	
+		    <div class="hc-search">
+		      <div class="hc-search-c">
+		        {% snippet search_form_new %}
+		      </div>
+		    </div>
+		  </section>
+		  {% endif %}
+
+		<div class="c-wrapper">		
+			{{ content_for_layout }}
+		</div>
+		{{ footer }}
+	</div>
+	</div>
+</div>
