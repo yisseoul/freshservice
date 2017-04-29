@@ -1,0 +1,22 @@
+<section class="content rounded-6 min-height-desktop">
+	<h2 class="heading">{% translate portal.search.results_for %} "{{ search.term | escape_once }}"</h2>	
+	{{ search | default_filters }}
+	<hr />
+	{% if search.result_count != 0 %}
+		<ul class="search-results-list">
+			{% for result in search.results %}
+			<li class="{{ result.type | downcase }}-item">				
+				<a href="{{result.url}}">{{ result.title }}</a>
+				<span class="label label-small label-light">{{ result.group }}</span>
+				<div>{{ result.desc }}</div>
+				<p class="help-text">
+					{{ result.source.created_on | short_day_with_time }}
+				</p>
+			</li>
+			{% endfor %}
+		</ul>
+		{{ search.pagination }}
+	{% else %}
+		<div class="lead">{% translate search.no_results_msg %}</div>
+	{% endif %}
+</section>
