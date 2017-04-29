@@ -1,0 +1,24 @@
+<section class="content main rounded-6 min-height-on-desktop" id="announcements-page">
+	<div class="an-title">
+		<span class="icon-announcement"></span>
+		<span class="heading">{% translate portal.announcements %}</span>
+	</div>
+	{% paginate portal.itil_announcements by 10 %}
+		<div class="c-list topic-list" id="forum-topic-list">					
+			{% for topic in paginate.collection %}
+				<div class="c-row c-user-thumb">
+					{{ topic.user | profile_image }}
+					<div class="ellipsis">						
+						<a class="c-link" title="{{topic.title | h}}" href="{{topic.url}}">{{topic.title | h}}</a>
+					</div>				
+					<div class="help-text"> 
+						{{ topic | topic_brief }}
+					</div>
+				</div>
+			{% else %}
+				<p class="lead">{% translate portal.no_topics_in_this_view %}</p>
+			{% endfor %}
+		</div>			
+		{{ paginate | default_pagination }}
+	{% endpaginate %}
+</section>
