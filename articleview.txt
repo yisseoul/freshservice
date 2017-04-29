@@ -1,0 +1,30 @@
+<div class="content min-height-on-desktop" id="article-show-{{ article.id }}">
+	<div class="breadcrumb solution-breadcrumb">
+		<a href="{{ portal.solutions_home_url }}"> {% translate portal.solutions_home %} </a>
+		<a href="{{ article.category.url }}">{{ article.category.name | h}}</a>
+		<a href="{{ article.folder.url }}">{{ article.folder.name | h}}</a>
+	</div>
+  
+	<div class="main content single-article-main min-height-on-desktop">
+		<h2 class="single-article-title">{{ article.title | h}} <a href="javascript:print();" class="icon-print solution-print-icon" title="{% translate portal.print_title %}"></a></h2>
+		<h4 class="modified-single-article">{% translate portal.article.modified_on %} {{ article.modified_on | short_day_with_time }}</h4>
+      {% comment %} 
+      <div>
+      {% for tag in article.tags %}
+        <span class="label label-info">{{tag.name | h}}</span>
+      {% endfor %}
+      </div>
+    {% endcomment %}
+    
+      <div class="single-article-content article-body portal-para clearfix">
+        {{ article.body }}
+      </div>
+      <hr />	
+        {{article | article_attachments}}
+      
+      {{article | article_voting }}
+	</div>
+  <section class="side-article-list sidebar content min-height-on-desktop article-list">
+    {{ article | related_articles: 10, 'related_articles' }}
+  </section>
+</div>
