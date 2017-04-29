@@ -1,0 +1,96 @@
+<header class="banner header-menu" id="new-header">
+	<div class="banner-wrapper">
+		<div class="nav-wrapper">
+      <div class="banner-title" id="logo">
+          {{ portal | logo }}
+          <h1 class="ellipsis heading">{{portal.name|h}}</h1>
+      </div>
+  		<nav class="nav-menu hide-in-mobile" id="header-tabs">
+        {%unless portal.portal_phone == blank%}
+    			<ul>
+    				  <li class="nav-contact"><i class="icon-phone"></i>{{ portal.portal_phone }}</li>
+    			</ul>
+        {%endunless%}
+  		</nav>
+		</div>
+	</div>
+</header>
+
+ <div id="sticky_head">
+    <nav class="page-tabs action-bar" >
+      {% if portal.tabs.size > 0 %}
+      <a id="menu-icon" class="icon-reorder show-in-mobile menu-trigger"></a>
+      <a href="/support/home" class="help-center-tab show-in-mobile">{% translate portal.home %}</a>
+      <div class="action-bar-wrapper">  
+      <div class="nav-link" id="page-tabs">
+          {% for tab in portal.tabs %}
+            {% if tab.url %}
+              {% if tab.label != "Service Catalog" %}
+                <a class="{% if tab.tab_type == portal.current_tab %}active{% endif %}" href="{{tab.url}}">
+                  {{ tab.label }}
+                </a>
+              {% else %}
+              <!-- New Request -->
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+      </div>
+        <div id="new-ticket-button">
+          {% if portal.has_user_signed_in == true %}
+            <i class="icon-bell" ></i>
+            {% unless portal.portal_user_approvals.size == 0 %}
+              <div class="notify-circle">{{portal.portal_user_approvals.size}}</div>
+            {% endunless %}
+
+            <div class="notification-popup w400 hide">
+              <div class="notify-header">
+                {% translate portal.notifications %}
+              </div>
+              <div class="notification-wrapper">
+              {% for approval in portal.portal_user_approvals %}
+                <div class="notify-items clearfix">
+                  <div class="pull-left requester-img">{{ approval.user | profile_image: nil, '30px', '30px' }}</div>
+                  <div class="pull-left notify-content">
+                    <div>
+                       <span class="requester-name">{{approval.user.name}}</span> requested approval for 
+                        <a href = "{{approval.url}}" target="_blank">{{approval.approvable.id}}</a>
+                     </div>
+                     <div></div>
+                  </div>
+                </div>
+              {%endfor%}
+              {% if portal.portal_user_approvals.size == 0 %}
+                <div class="notify-items clearfix">
+                  <div class="no-row">
+                    {% translate portal.no_new_notifications %}
+                  </div>
+                </div>
+              {% endif %}
+              </div>
+            </div>
+
+            {% if portal.user.profile_url != false %}		
+              <img class="profile-picture" src="{{ portal.user.profile_url }}" onerror="imgerror(this)" />
+            {% else %}
+         	  <img class="profile-picture" src="/images/fillers/profile_blank_thumb.gif" />
+	        {% endif %}
+          	<div class="dropdown" id="action-bar-toggle">
+                <a class="dropdown-toggle profile-name" id="dLabel" role="button" data-toggle="dropdown" data-target="#" href="#">{{ current_user.name }}<b class="caret"></b></a>
+                <ul class="dropdown-menu profile-popup" role="menu" aria-labelledby="dLabel">
+                    <a href="{{ portal.profile_url }}">{% translate portal.edit_profile %}</a>
+                  <a href="{{ portal.logout_url }}">{% translate portal.sign_out %}</a>
+                </ul>
+            </div>
+            <a href="{{ portal.new_ticket_url }}" class="btn btn-blue">New Incident</a>
+	        <a href="/support/catalog/items" class="btn" style="margin-left: 10px;">New Request</a>
+            {% else %}
+              <a href="{{ portal.login_url }}" class="portal-signin uppercase">{% translate portal.signin %}</a>
+            {% if portal.can_signup_feature %}
+              <a href="{{ portal['signup_url'] }}" class="btn btn-red uppercase">{% translate portal.signup %}</a>
+            {% endif %}
+          {% endif %}
+        </div>
+      </div>
+      {% endif %}
+    </nav>
+</div>
