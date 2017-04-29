@@ -1,0 +1,100 @@
+{% if portal.has_forums %}
+<div class="announcement-container">
+  <div class="hide-in-mobile">
+  	<span class="icon-announcement pull-left"></span>
+  	<h3 class="pull-left">{% translate portal.announcements %}</h3>
+  	<a class="pull-left hide-in-mobile" href = {{portal.show_announcements_url}}>{% translate portal.view_all %}</a>
+  </div>
+	<div class="clearfix"></div>
+  <div class="show-in-mobile an-mob-header">
+    <h3>{% translate portal.announcements %}</h3>
+    <div class="icon-announcement"></div>
+  </div>
+	<div class="an-content">
+    {{ portal | filter_for_announcements_new }}
+	</div>
+</div>
+{%endif%}
+
+
+<div class="quick-link">
+  <div class="quick-link-wrapper">
+    <ul class="quick-link-lister">
+      <li>
+        <a href={{portal.tickets_home_url}} class="quick-link-widgets">
+          <span class="circle">
+            <span class="icon-your-tickets"></span>
+          </span>
+          <h3>{% translate portal.your_tickets %}</h3>
+          <h5><!--{% translate portal.your_tickets_desc %}-->All Tickets, Responses, &amp; Activities</h5>
+             {% if portal.has_user_signed_in == true %}
+             <div class="login-popup w400 hide" id="recent-tickets-list">
+                 <table>
+                 {% for ticket in portal.portal_user_recent_tickets%}
+                  <tr>
+                    <td>
+                      <a href={{ticket.portal_url}}>{{ticket.subject | h}}<span class='ticket_id'> #{{ticket.id}}</span></a>
+                      <div>{{ ticket | ticket_date_format }}</div>
+                    </td>
+                    <td><span>{{ticket.status}}</span></td>
+                  </tr>
+                  {%endfor%}
+                 </table>
+               </div>
+             {% else%}
+              <div class="login-popup">
+                  <a href = {{portal.login_url}}>{% translate portal.login %}</a> 
+                  {% if portal.can_signup_feature %}
+                    {% translate portal.or %} <a href = {{portal['signup_url']}}>{% translate portal.signup %}</a> 
+                  {% endif %}
+                  {% translate portal.to_view_your_requests %}
+              </div>
+             {% endif %}
+        </a>
+      </li>
+      
+      <li>
+        <a href={{portal.new_ticket_url}} class="quick-link-widgets">
+           <span class="circle">
+            <span class="icon-report-incident"></span>
+          </span>
+           <h3>{% translate portal.report_incident %} </h3>
+           <h5><!--{% translate portal.report_incident_desc %}-->Open a Support Incident Ticket</h5>
+        </a>
+      </li>
+
+      {% if portal.support_service_catalog_feature?%}
+      <li>
+        <a href={{portal.service_catalog_items_url}} class="quick-link-widgets">
+          <span class="circle">
+            <span class="icon-request-service"></span>
+          </span>
+          <h3><!--{% translate portal.request_service %}-->Submit a Request</h3>
+          <h5><!--{% translate portal.request_service_desc %}-->Open a Support Request Ticket</h5>
+        </a>
+      </li>
+      {%endif%}
+      
+      <li>
+        <a href={{portal.support_solutions_url}} class="quick-link-widgets">
+          <span class="circle">
+            <span class="icon-browse-solution"></span>
+          </span>
+          <h3><!--{% translate portal.browse_solutions %}-->Find a Solution</h3>
+          <h5><!--{% translate portal.browse_solutions_desc %}-->How-To Guides, FAQs, and Policies</h5>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div class="popular-items">
+  {% if portal.has_user_signed_in == true %}
+    {{ portal | filter_for_popular_services }}
+  {% endif %}
+    {{ portal | filter_for_articles}}
+</div>
+
+{% if portal.has_user_signed_in == true %}
+  {% snippet new_chat_form %}
+{% endif %}
